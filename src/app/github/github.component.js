@@ -4,7 +4,7 @@
 //import * as THREE from '/node_modules/three/build/three.module.js';
 //import gsap from "gsap";
 
-myFunction = function myFunction(){
+//myFunction = function myFunction(){
 
 
 //   var scene = new Three.scene();
@@ -35,8 +35,8 @@ myFunction = function myFunction(){
 //         renderer.render(scene,camera);
         // myFunction= function myFunction(){
     
-           alert("It works");
+           //alert("It works");
            
          //};
 
-      };
+     // };

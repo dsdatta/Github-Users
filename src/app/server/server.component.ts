@@ -17,17 +17,18 @@ export class ServerComponent implements OnInit {
   constructor(private _http:HttpClient) {
     console.log('Github service started...');
    }
-   getUser()
+   getUser() //Api connecting github users
    {
      return this._http.get('https://api.github.com/users/'+this.username+'?client_id='+this.client_id+'&client_secret='+this.client_secret);
    }
    errorHandler(error: any): void {
     console.log(error)
   }
-   searchUser(username:any)
+   searchUser(username:any) 
    {
     this.username=username;
    }
+   
 
   ngOnInit(): void {
   }

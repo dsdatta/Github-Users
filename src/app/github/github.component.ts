@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ServerComponent } from '../server/server.component';
 import * as THREE from 'three';
 
@@ -14,44 +14,63 @@ export class GithubComponent  {
   user:any;
   username:any;
   errors:any;
+  avatar_url:string;
   constructor(private _githubService:ServerComponent) {
       this._githubService.getUser().subscribe(user => {
      this.user = false;
-     console.log(this.user);
+     //this.user = user;
+     //this.avatar_url = this.user.avatar_url;
+     //this.animationFunction(this.user.avatar_url);
+ 
      },errors => {
         this.errors = errors;
        console.error('Oops', errors);
        });
-    //this.user=false;
    }
-   search()
-  {
+
+   search() //Search function returns the entered result from textbox
+  {   
     this._githubService.searchUser(this.username);
     this._githubService.getUser().subscribe(user => {
       this.user = user;
+      this.animationFunction(this.user.avatar_url);
     });
-    //this.animationFunction();
+
   }
-  animationFunction() {
-    
+
+  animationFunction(avatar_url:string) //3D Cube with profile image of the search result
+  {   
   var scene = new THREE.Scene();
 
   //var camera = new THREE.PerspectiveCamera(75,window.innerWidth/window.innerHeight,0.1,1000)
-  var camera = new THREE.PerspectiveCamera(75,400/200,0.1,1000)
+  var camera = new THREE.PerspectiveCamera(75,400/300,0.1,1000)
 
-        camera.position.z = 2;
+        camera.position.z =1.5;
 
   var renderer = new THREE.WebGLRenderer({antialias: true});
-  renderer.setClearColor("#e5e5e5");
+  //renderer.setClearColor("#e5e5e5");
+  renderer.setClearColor("#FFFFFF");
   //renderer.setSize(window.innerWidth,window.innerHeight);
-  renderer.setSize(400,200);
+  renderer.setSize(400,300);
+  var elementExists = document.getElementById("one");
 
-  document.body.appendChild(renderer.domElement);
+  if(!elementExists)
+  {
+    document.body.appendChild(renderer.domElement);
+    renderer.domElement.id='one';
+
+  }else{
+    elementExists.parentNode.removeChild(elementExists);
+    document.body.appendChild(renderer.domElement);
+    renderer.domElement.id='one';
+  }
+    
+
   window.addEventListener('resize', () => {
             //renderer.setSize(window.innerWidth,window.innerHeight);
             //camera.aspect = window.innerWidth / window.innerHeight;
-            renderer.setSize(400,200);
-            camera.aspect = 400 / 200;
+            renderer.setSize(400,300);
+            camera.aspect = 400 / 300;
 
             camera.updateProjectionMatrix();
         })
@@ -60,8 +79,7 @@ export class GithubComponent  {
   //var material = new THREE.MeshLambertMaterial({color: 0xFFCC00});
   //var material = new THREE.MeshLambertMaterial({color: 0xF7F7F7});
   const textureLoader = new THREE.TextureLoader();
-  const texture = textureLoader.load('./assets/img/time.jpg');
-  //const texture = textureLoader.load('user.avatar_url');
+  const texture = textureLoader.load(String(avatar_url));
   var materials = new THREE.MeshLambertMaterial({map: texture });
 
   var mesh = new THREE.Mesh(geometry, materials);
@@ -77,16 +95,18 @@ export class GithubComponent  {
         scene.add(light);
   var render =function(){
     requestAnimationFrame(render);
-    mesh.rotation.x +=0.03;
-    mesh.rotation.y +=0.01;
+    //mesh.rotation.x +=-0.01;
+    // mesh.rotation.y +=0.01;
+     mesh.rotation.y +=0.02;
     renderer.render(scene,camera);
   }
   render();
-   
+  
+
   }
   
   ngOnInit(): void {
-    this.animationFunction();
+  
      
   }
 
