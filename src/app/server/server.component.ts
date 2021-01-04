@@ -24,6 +24,11 @@ export class ServerComponent implements OnInit {
    errorHandler(error: any): void {
     console.log(error)
   }
+     getRepos() //Api connecting github users repos
+   {
+     return this._http.get('https://api.github.com/users/'+this.username+'/repos');
+   }
+  
    searchUser(username:any) 
    {
     this.username=username;

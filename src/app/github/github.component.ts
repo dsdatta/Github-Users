@@ -15,6 +15,7 @@ export class GithubComponent  {
   username:any;
   errors:any;
   avatar_url:string;
+  repos:any;
   constructor(private _githubService:ServerComponent) {
       this._githubService.getUser().subscribe(user => {
      this.user = false;
@@ -23,6 +24,13 @@ export class GithubComponent  {
         this.errors = errors;
        console.error('Oops', errors);
        });
+
+       this._githubService.getRepos().subscribe(repos => {
+        this.repos = repos;
+        },errors => {
+           this.errors = errors;
+          console.error('Oops', errors);
+          });
    }
 
    search() //Search function returns the entered result from textbox
@@ -32,8 +40,10 @@ export class GithubComponent  {
       this.user = user;
       this.animationFunction(this.user.avatar_url);
     });
-
-  }
+    this._githubService.getRepos().subscribe(repos => {
+      this.repos = repos;
+      });
+}
 
   animationFunction(avatar_url:string) //3D Cube with profile image of the search result
   {   
